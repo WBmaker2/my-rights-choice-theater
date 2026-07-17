@@ -99,6 +99,7 @@ h2 {
 }
 
 .brand {
+  min-width: 44px;
   min-height: 48px;
   display: inline-flex;
   align-items: center;
@@ -306,6 +307,7 @@ h2 {
   .header-actions .button-quiet { grid-column: 2; grid-row: 1; padding-inline: 12px; }
   .progress-status { grid-column: 1 / -1; grid-row: 2; justify-content: flex-end; }
   .step-progress { width: min(148px, 48vw); }
+  .app-header-simple { align-items: center; }
   .main-content { padding-top: 28px; }
   .navigation-row { align-items: stretch; flex-direction: column-reverse; }
   .navigation-row .button { width: 100%; }

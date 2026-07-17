@@ -55,8 +55,8 @@ describe("내 권리 선택 극장 흐름", () => {
 
     expect(screen.getByLabelText("현재 진행 1 / 5 장면, 2 / 8 단계 지켜져야 할 것")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /내 생각을 말할 기회/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /마음과 이름의 존중/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /안전하게 보호받기/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /내 마음과 이름 지키기/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /안전하게 도움받기/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /나의 사진과 정보/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /안전하게 놀기/ })).not.toBeInTheDocument();
   });

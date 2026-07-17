@@ -4,7 +4,7 @@ export const rights: RightCard[] = [
   {
     id: "self-respect",
     icon: "💛",
-    label: "마음과 이름의 존중",
+    label: "내 마음과 이름 지키기",
     description: "싫은 말이나 별명으로 마음이 다치지 않게 지켜져야 해요.",
   },
   {
@@ -22,7 +22,7 @@ export const rights: RightCard[] = [
   {
     id: "protection",
     icon: "🛟",
-    label: "안전하게 보호받기",
+    label: "안전하게 도움받기",
     description: "위험하거나 걱정될 때 어른의 도움을 받을 수 있어요.",
   },
   {
@@ -38,13 +38,13 @@ export const safeActions: SafeAction[] = [
     id: "say-boundary",
     icon: "✋",
     label: "직접 말하기",
-    description: "안전하고 말하고 싶을 때, 그만하고 싶다고 말해요.",
+    description: "말해도 괜찮을 때, ‘그만하고 싶어요’라고 말해요.",
   },
   {
     id: "move-away",
     icon: "👣",
-    label: "자리에서 벗어나기",
-    description: "가능하다면 그 자리에서 나와 도움을 줄 수 있는 어른에게 가요.",
+    label: "자리에서 나오기",
+    description: "할 수 있다면 그 자리에서 나와, 도와줄 수 있는 어른에게 가요.",
   },
   {
     id: "show-help-card",
@@ -55,8 +55,8 @@ export const safeActions: SafeAction[] = [
   {
     id: "ask-adult",
     icon: "🤝",
-    label: "어른에게 함께해 달라고 하기",
-    description: "다른 행동을 먼저 하지 않아도 바로 어른에게 도움을 요청할 수 있어요.",
+    label: "어른에게 도와 달라고 하기",
+    description: "다른 일을 먼저 하지 않아도 돼요. 바로 어른에게 도와 달라고 해요.",
   },
   {
     id: "ask-another-adult",
@@ -105,6 +105,12 @@ export const sources = [
 ];
 
 export const updates = [
+  {
+    version: "0.3.0",
+    date: "2026-07-18",
+    title: "초등학생이 읽기 쉬운 말과 화면 개선",
+    detail: "어려운 표현을 쉬운 말로 바꾸고, 모바일 첫 화면과 도움 카드 수, 건너뛰기와 뒤로가기 버튼을 더 알아보기 쉽게 고쳤어요.",
+  },
   {
     version: "0.2.0",
     date: "2026-07-17",

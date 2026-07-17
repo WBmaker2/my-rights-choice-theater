@@ -42,15 +42,17 @@ const activityScreens: Screen[] = [
   "summary",
 ];
 
+const skippableScreens: Screen[] = ["scene", "rights", "actions", "builder", "delivery"];
+
 const activityStepLabels: Partial<Record<Screen, string>> = {
   scene: "장면 보기",
   rights: "지켜져야 할 것",
   actions: "도움 방법",
   builder: "도움 문장",
-  delivery: "전달하기",
-  adult: "어른의 응답",
-  another: "다른 어른",
-  summary: "장면 정리",
+  delivery: "어떻게 알리기",
+  adult: "어른의 도움",
+  another: "다른 어른에게 알리기",
+  summary: "함께 본 내용",
 };
 
 export function TheaterApp() {
@@ -84,6 +86,7 @@ export function TheaterApp() {
       : `${sceneIndex + 1} / ${sceneBank.length} 장면`;
   const activityStepIndex = activityScreens.indexOf(screen);
   const stepLabel = activityStepLabels[screen];
+  const canSkipScene = skippableScreens.includes(screen);
 
   useEffect(() => {
     const heading = mainRef.current?.querySelector<HTMLElement>("h1");
@@ -148,12 +151,13 @@ export function TheaterApp() {
         stepLabel={stepLabel}
         stepCurrent={activityStepIndex >= 0 ? activityStepIndex + 1 : undefined}
         stepTotal={activityScreens.length}
+        showProgress={screen !== "welcome" && screen !== "guide"}
         showEnd={activityStepIndex >= 0}
         onUrgentHelp={() => setModal("urgent")}
         onEnd={() => setModal("end")}
       />
 
-      {activityStepIndex >= 0 && (
+      {canSkipScene && (
         <div className="skip-bar">
           <span>보고 싶지 않은 장면은 이유 없이 넘어가도 돼요.</span>
           <button type="button" onClick={skipScene}>이 장면 건너뛰기 <span aria-hidden="true">→</span></button>
@@ -166,7 +170,7 @@ export function TheaterApp() {
             <div className="welcome-copy">
               <span className="kicker">모든 어린이에게 꼭 지켜져야 하는 것</span>
               <h1 id="welcome-title">내 권리 선택 극장</h1>
-              <p className="welcome-lead">가상 인물의 짧은 장면을 보고, 무엇이 지켜져야 하는지와 여러 도움 방법을 함께 살펴봐요.</p>
+              <p className="welcome-lead">만든 이야기 속 친구를 보며, 친구에게 필요한 것과 도움받는 방법을 찾아봐요.</p>
               <div className="safety-promise">
                 <span aria-hidden="true">🌿</span>
                 <p><strong>내 이야기를 말하지 않아도 돼요.</strong> 여기 나오는 일은 모두 만든 이야기예요.</p>
@@ -195,7 +199,7 @@ export function TheaterApp() {
           <section className="screen-card guide-screen" aria-labelledby="guide-title">
             <span className="screen-eyebrow">시작하기 전에</span>
             <h1 id="guide-title">도움을 받는 방법은 하나가 아니에요</h1>
-            <p className="screen-intro">어떤 방법을 골라도 도움받을 자격은 똑같아요.</p>
+            <p className="screen-intro">어떤 방법을 써도 도움받을 수 있어요.</p>
             <div className="guide-options">
               {communicationModes.map((item) => (
                 <article key={item.id} className="guide-card">
@@ -228,7 +232,7 @@ export function TheaterApp() {
           <section className="screen-card" aria-labelledby="rights-title">
             <span className="screen-eyebrow">{scene.title}</span>
             <h1 id="rights-title">무엇이 지켜져야 할까요?</h1>
-            <p className="screen-intro">중요한 것은 하나보다 많을 수 있어요. 마음에 닿는 카드를 골라 보세요.</p>
+            <p className="screen-intro">필요한 것은 여러 개일 수 있어요. 필요하다고 생각하는 카드를 골라 보세요.</p>
             <div className="choice-grid">
               {rights.filter((right) => scene.rightOptions.includes(right.id)).map((right) => (
                 <SelectionCard key={right.id} icon={right.icon} title={right.label} description={right.description} selected={selectedRights.includes(right.id)} onClick={() => toggleRight(right.id)} />
@@ -250,14 +254,14 @@ export function TheaterApp() {
           <section className="screen-card" aria-labelledby="actions-title">
             <span className="screen-eyebrow">안전한 선택</span>
             <h1 id="actions-title">어떤 방법을 써 볼 수 있을까요?</h1>
-            <p className="screen-intro">여러 개를 골라도 되고, 아무것도 고르지 않고 도움 문장으로 가도 돼요.</p>
+            <p className="screen-intro">여러 개를 골라도 돼요. 바로 도움 문장으로 가도 괜찮아요.</p>
             <div className="choice-grid">
-              {safeActions.filter((action) => scene.actionOptions.includes(action.id) && action.id !== "skip-scene").map((action) => (
+              {safeActions.filter((action) => scene.actionOptions.includes(action.id) && action.id !== "skip-scene" && action.id !== "ask-another-adult").map((action) => (
                 <SelectionCard key={action.id} icon={action.icon} title={action.label} description={action.description} selected={selectedActions.includes(action.id)} onClick={() => toggleAction(action.id)} />
               ))}
             </div>
             <div className="navigation-row">
-              <button className="button button-secondary" type="button" onClick={() => setScreen("rights")}>이전</button>
+              <button className="button button-secondary" type="button" onClick={() => setScreen("rights")}>권리 카드 다시 보기</button>
               <button className="button button-primary" type="button" onClick={() => setScreen("builder")}>도움 문장 만들기</button>
             </div>
           </section>
@@ -267,25 +271,25 @@ export function TheaterApp() {
           <section className="screen-card" aria-labelledby="builder-title">
             <span className="screen-eyebrow">도움 문장 만들기</span>
             <h1 id="builder-title">짧은 문장을 이어 보세요</h1>
-            <p className="screen-intro">내가 겪은 일을 쓰는 곳이 아니에요. 가상 인물의 문장만 골라요.</p>
+            <p className="screen-intro">내 이야기를 쓰는 곳이 아니에요. 만든 이야기 속 친구의 문장만 골라요.</p>
             <div className="sentence-builder">
               <PhraseGroup label="1. 무슨 일이 있었나요?" phrases={scene.factPhrases} selected={factIndex} onSelect={(index) => index !== null && setFactIndex(index)} />
               <PhraseGroup label="2. 하고 싶은 말 (넣지 않아도 돼요)" phrases={scene.boundaryPhrases} selected={boundaryIndex} onSelect={setBoundaryIndex} optional />
               <PhraseGroup label="3. 어떤 도움이 필요한가요?" phrases={scene.helpPhrases} selected={helpIndex} onSelect={(index) => index !== null && setHelpIndex(index)} />
             </div>
-            <div className="sentence-preview" aria-live="polite"><span>완성된 도움 문장</span><p>{sentence}</p></div>
+            <div className="sentence-preview" aria-live="polite"><span>이렇게 말할 수 있어요</span><p>{sentence}</p></div>
             <div className="navigation-row">
-              <button className="button button-secondary" type="button" onClick={() => setScreen("actions")}>이전</button>
-              <button className="button button-primary" type="button" onClick={() => setScreen("delivery")}>전달 방법 고르기</button>
+              <button className="button button-secondary" type="button" onClick={() => setScreen("actions")}>도움 방법 다시 보기</button>
+              <button className="button button-primary" type="button" onClick={() => setScreen("delivery")}>어떻게 알려 줄지 고르기</button>
             </div>
           </section>
         )}
 
         {screen === "delivery" && (
           <section className="screen-card" aria-labelledby="delivery-title">
-            <span className="screen-eyebrow">전달 방법</span>
+            <span className="screen-eyebrow">어떻게 알려 줄까요?</span>
             <h1 id="delivery-title">편한 방법을 골라요</h1>
-            <p className="screen-intro">말하기, 카드 보여 주기, 가리키기는 모두 같은 도움 요청이에요.</p>
+            <p className="screen-intro">말해도, 카드를 보여 줘도, 문장을 가리켜도 도움을 받을 수 있어요.</p>
             <div className="delivery-grid">
               {communicationModes.map((item) => (
                 <button key={item.id} className={mode === item.id ? "delivery-card delivery-card-selected" : "delivery-card"} type="button" aria-pressed={mode === item.id} onClick={() => setMode(item.id)}>
@@ -296,15 +300,15 @@ export function TheaterApp() {
             <div className="help-card-preview"><span>도움이 필요해요</span><p>{sentence}</p></div>
             <div className="navigation-row">
               <button className="button button-secondary" type="button" onClick={() => setScreen("builder")}>문장 바꾸기</button>
-              <button className="button button-primary" type="button" onClick={saveSentenceAndContinue}>어른의 응답 보기</button>
+              <button className="button button-primary" type="button" onClick={saveSentenceAndContinue}>어른이 어떻게 돕는지 보기</button>
             </div>
           </section>
         )}
 
         {screen === "adult" && (
           <section className="screen-card adult-screen" aria-labelledby="adult-title">
-            <span className="screen-eyebrow">책임 있는 어른의 응답</span>
-            <h1 id="adult-title">어른이 듣고 보호해야 해요</h1>
+            <span className="screen-eyebrow">어른은 이렇게 도와야 해요</span>
+            <h1 id="adult-title">어른은 듣고 안전하게 도와야 해요</h1>
             <blockquote className="adult-quote">“{scene.adultResponse.message}”</blockquote>
             <h2>어른이 할 일</h2>
             <ul className="responsibility-list">
@@ -322,9 +326,9 @@ export function TheaterApp() {
             <span className="big-icon" aria-hidden="true">🔁</span>
             <h1 id="another-title">한 어른이 바로 돕지 못해도</h1>
             <p className="another-lead">{scene.anotherAdult}</p>
-            <div className="kind-feedback"><strong>다시 말해도 괜찮아요.</strong> 도움을 연결하고 안전하게 지킬 책임은 어른에게 있어요.</div>
+            <div className="kind-feedback"><strong>다시 말해도 괜찮아요.</strong> 도움받을 때까지 어른들이 함께 도와야 해요.</div>
             <div className="navigation-row">
-              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른 응답 다시 보기</button>
+              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른이 돕는 방법 다시 보기</button>
               <button className="button button-primary" type="button" onClick={() => setScreen("summary")}>이 장면 정리하기</button>
             </div>
           </section>
@@ -332,15 +336,15 @@ export function TheaterApp() {
 
         {screen === "summary" && (
           <section className="screen-card" aria-labelledby="summary-title">
-            <span className="screen-eyebrow">점수 없는 장면 정리</span>
+            <span className="screen-eyebrow">함께 살펴본 내용</span>
             <h1 id="summary-title">{scene.title}</h1>
             <div className="summary-columns">
               <article><span aria-hidden="true">💛</span><h2>지켜져야 할 것</h2><p>{rights.filter((right) => scene.rightIds.includes(right.id)).map((right) => right.label).join(", ")}</p></article>
-              <article><span aria-hidden="true">🛟</span><h2>가능한 도움</h2><p>말하기, 자리에서 나오기, 카드 보여 주기, 어른에게 가기</p></article>
-              <article><span aria-hidden="true">🤝</span><h2>어른이 할 일</h2><p>듣고, 보호하고, 필요한 도움을 함께 연결하기</p></article>
+              <article><span aria-hidden="true">🛟</span><h2>도움받는 방법</h2><p>말하기, 자리에서 나오기, 카드 보여 주기, 어른에게 가기</p></article>
+              <article><span aria-hidden="true">🤝</span><h2>어른이 할 일</h2><p>이야기를 듣고, 안전하게 돕고, 필요한 어른과 함께하기</p></article>
             </div>
             <div className="navigation-row">
-              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른 응답 다시 보기</button>
+              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른이 돕는 방법 다시 보기</button>
               <button className="button button-primary" type="button" onClick={moveToNextScene}>{sceneIndex === sceneBank.length - 1 ? "나의 도움 문장 모음" : "다음 장면 보기"}</button>
             </div>
           </section>
