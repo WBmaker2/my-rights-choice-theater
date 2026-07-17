@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AppHeader } from "../components/AppHeader";
 import { InfoModals, type ModalName } from "../components/InfoModals";
 import { SceneStage } from "../components/SceneStage";
@@ -42,7 +42,19 @@ const activityScreens: Screen[] = [
   "summary",
 ];
 
+const activityStepLabels: Partial<Record<Screen, string>> = {
+  scene: "장면 보기",
+  rights: "지켜져야 할 것",
+  actions: "도움 방법",
+  builder: "도움 문장",
+  delivery: "전달하기",
+  adult: "어른의 응답",
+  another: "다른 어른",
+  summary: "장면 정리",
+};
+
 export function TheaterApp() {
+  const mainRef = useRef<HTMLElement>(null);
   const [screen, setScreen] = useState<Screen>("welcome");
   const [modal, setModal] = useState<ModalName>(null);
   const [sceneIndex, setSceneIndex] = useState(0);
@@ -66,10 +78,21 @@ export function TheaterApp() {
   );
 
   const progress = screen === "welcome" || screen === "guide"
-    ? "안내"
+    ? screen === "welcome" ? "시작" : "안내"
     : screen === "session" || screen === "ended"
       ? "마무리"
       : `${sceneIndex + 1} / ${sceneBank.length} 장면`;
+  const activityStepIndex = activityScreens.indexOf(screen);
+  const stepLabel = activityStepLabels[screen];
+
+  useEffect(() => {
+    const heading = mainRef.current?.querySelector<HTMLElement>("h1");
+    if (!heading) return;
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [sceneIndex, screen]);
 
   function resetSceneChoices() {
     setPanelIndex(0);
@@ -120,9 +143,24 @@ export function TheaterApp() {
 
   return (
     <div className="app-shell">
-      <AppHeader progress={progress} onUrgentHelp={() => setModal("urgent")} onEnd={() => setScreen("ended")} />
+      <AppHeader
+        progress={progress}
+        stepLabel={stepLabel}
+        stepCurrent={activityStepIndex >= 0 ? activityStepIndex + 1 : undefined}
+        stepTotal={activityScreens.length}
+        showEnd={activityStepIndex >= 0}
+        onUrgentHelp={() => setModal("urgent")}
+        onEnd={() => setModal("end")}
+      />
 
-      <main id="main-content" className="main-content">
+      {activityStepIndex >= 0 && (
+        <div className="skip-bar">
+          <span>보고 싶지 않은 장면은 이유 없이 넘어가도 돼요.</span>
+          <button type="button" onClick={skipScene}>이 장면 건너뛰기 <span aria-hidden="true">→</span></button>
+        </div>
+      )}
+
+      <main id="main-content" className="main-content" ref={mainRef}>
         {screen === "welcome" && (
           <section className="welcome-grid" aria-labelledby="welcome-title">
             <div className="welcome-copy">
@@ -192,7 +230,7 @@ export function TheaterApp() {
             <h1 id="rights-title">무엇이 지켜져야 할까요?</h1>
             <p className="screen-intro">중요한 것은 하나보다 많을 수 있어요. 마음에 닿는 카드를 골라 보세요.</p>
             <div className="choice-grid">
-              {rights.map((right) => (
+              {rights.filter((right) => scene.rightOptions.includes(right.id)).map((right) => (
                 <SelectionCard key={right.id} icon={right.icon} title={right.label} description={right.description} selected={selectedRights.includes(right.id)} onClick={() => toggleRight(right.id)} />
               ))}
             </div>
@@ -272,7 +310,10 @@ export function TheaterApp() {
             <ul className="responsibility-list">
               {scene.adultResponse.responsibilities.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}
             </ul>
-            <div className="navigation-row single-action"><button className="button button-primary" type="button" onClick={() => setScreen("another")}>다른 어른에게 다시 말하는 방법</button></div>
+            <div className="navigation-row">
+              <button className="button button-secondary" type="button" onClick={() => setScreen("delivery")}>도움 카드 다시 보기</button>
+              <button className="button button-primary" type="button" onClick={() => setScreen("another")}>다른 어른에게 다시 말하는 방법</button>
+            </div>
           </section>
         )}
 
@@ -282,7 +323,10 @@ export function TheaterApp() {
             <h1 id="another-title">한 어른이 바로 돕지 못해도</h1>
             <p className="another-lead">{scene.anotherAdult}</p>
             <div className="kind-feedback"><strong>다시 말해도 괜찮아요.</strong> 도움을 연결하고 안전하게 지킬 책임은 어른에게 있어요.</div>
-            <div className="navigation-row single-action"><button className="button button-primary" type="button" onClick={() => setScreen("summary")}>이 장면 정리하기</button></div>
+            <div className="navigation-row">
+              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른 응답 다시 보기</button>
+              <button className="button button-primary" type="button" onClick={() => setScreen("summary")}>이 장면 정리하기</button>
+            </div>
           </section>
         )}
 
@@ -295,7 +339,10 @@ export function TheaterApp() {
               <article><span aria-hidden="true">🛟</span><h2>가능한 도움</h2><p>말하기, 자리에서 나오기, 카드 보여 주기, 어른에게 가기</p></article>
               <article><span aria-hidden="true">🤝</span><h2>어른이 할 일</h2><p>듣고, 보호하고, 필요한 도움을 함께 연결하기</p></article>
             </div>
-            <div className="navigation-row single-action"><button className="button button-primary" type="button" onClick={moveToNextScene}>{sceneIndex === sceneBank.length - 1 ? "나의 도움 문장 모음" : "다음 장면 보기"}</button></div>
+            <div className="navigation-row">
+              <button className="button button-secondary" type="button" onClick={() => setScreen("adult")}>어른 응답 다시 보기</button>
+              <button className="button button-primary" type="button" onClick={moveToNextScene}>{sceneIndex === sceneBank.length - 1 ? "나의 도움 문장 모음" : "다음 장면 보기"}</button>
+            </div>
           </section>
         )}
 
@@ -327,19 +374,19 @@ export function TheaterApp() {
         )}
       </main>
 
-      {activityScreens.includes(screen) && (
-        <div className="skip-bar">
-          <span>보고 싶지 않은 장면은 이유 없이 넘어가도 돼요.</span>
-          <button type="button" onClick={skipScene}>이 장면 건너뛰기 <span aria-hidden="true">→</span></button>
-        </div>
-      )}
-
       <footer className="app-footer">
         <p>이 앱은 상담·신고·위험 판단을 하지 않아요.</p>
         <div><button type="button" onClick={() => setModal("teacher")}>교사용 안내</button><button type="button" onClick={() => setModal("updates")}>업데이트 내역</button></div>
       </footer>
 
-      <InfoModals open={modal} onClose={() => setModal(null)} />
+      <InfoModals
+        open={modal}
+        onClose={() => setModal(null)}
+        onConfirmEnd={() => {
+          setModal(null);
+          setScreen("ended");
+        }}
+      />
     </div>
   );
 }

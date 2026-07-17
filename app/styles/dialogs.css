@@ -34,6 +34,9 @@
 .modal-lead { font-size: 1.25rem; font-weight: 900; }
 .small-note { padding: 12px; border-radius: 12px; color: var(--ink-soft); background: var(--canvas); font-size: 0.88rem; }
 
+.end-confirmation > p { margin-bottom: 24px; color: var(--ink-soft); font-size: 1.08rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
 .timeline { border-left: 2px solid var(--line); padding-left: 24px; }
 .timeline-item { position: relative; }
 .timeline-item::before { content: ""; position: absolute; left: -32px; top: 9px; width: 14px; height: 14px; border-radius: 50%; background: var(--coral); }
@@ -52,4 +55,5 @@
 @media (max-width: 520px) {
   .modal-backdrop { padding: 10px; }
   .modal-card { padding: 22px 18px; border-radius: 20px; }
+  .modal-actions { align-items: stretch; flex-direction: column-reverse; }
 }

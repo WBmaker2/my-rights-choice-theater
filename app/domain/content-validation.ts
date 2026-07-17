@@ -26,6 +26,9 @@ export function validateSceneBank(scenes: Scene[]) {
 
     if (scene.actionOptions.length < 4) errors.push(`${scene.id}: 안전 선택이 4개 미만`);
     if (scene.rightIds.length < 2) errors.push(`${scene.id}: 권리·필요가 2개 미만`);
+    if (scene.rightOptions.length !== 3) errors.push(`${scene.id}: 화면용 권리 카드가 3개가 아님`);
+    if (new Set(scene.rightOptions).size !== scene.rightOptions.length) errors.push(`${scene.id}: 화면용 권리 카드 중복`);
+    if (scene.rightIds.some((rightId) => !scene.rightOptions.includes(rightId))) errors.push(`${scene.id}: 핵심 권리 카드가 화면 선택지에 없음`);
     if (!scene.anotherAdult) errors.push(`${scene.id}: 다른 어른 경로 없음`);
     if (!scene.sourceIds.length) errors.push(`${scene.id}: 공식 출처 없음`);
     if (!scene.reviewVersion || !scene.reviewedAt) errors.push(`${scene.id}: 검토 이력 없음`);

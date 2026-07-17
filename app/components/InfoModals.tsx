@@ -1,14 +1,15 @@
 import { sources, updates } from "../content/registry";
 import { Modal } from "./Modal";
 
-export type ModalName = "urgent" | "updates" | "teacher" | null;
+export type ModalName = "urgent" | "updates" | "teacher" | "end" | null;
 
 interface InfoModalsProps {
   open: ModalName;
   onClose: () => void;
+  onConfirmEnd: () => void;
 }
 
-export function InfoModals({ open, onClose }: InfoModalsProps) {
+export function InfoModals({ open, onClose, onConfirmEnd }: InfoModalsProps) {
   if (open === "urgent") {
     return (
       <Modal title="도움이 급할 때" onClose={onClose}>
@@ -57,6 +58,20 @@ export function InfoModals({ open, onClose }: InfoModalsProps) {
               </li>
             ))}
           </ul>
+        </div>
+      </Modal>
+    );
+  }
+
+  if (open === "end") {
+    return (
+      <Modal title="활동을 끝낼까요?" onClose={onClose}>
+        <div className="end-confirmation">
+          <p>지금 끝내도 괜찮아요. 지금까지 고른 내용은 이 기기에 저장되지 않아요.</p>
+          <div className="modal-actions">
+            <button className="button button-secondary" type="button" onClick={onClose}>계속하기</button>
+            <button className="button button-primary" type="button" onClick={onConfirmEnd}>활동 끝내기</button>
+          </div>
         </div>
       </Modal>
     );

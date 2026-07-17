@@ -106,6 +106,12 @@ export const sources = [
 
 export const updates = [
   {
+    version: "0.2.0",
+    date: "2026-07-17",
+    title: "학생 흐름과 모바일 조작 개선",
+    detail: "장면별 권리 카드를 3개로 줄이고, 단계 진행 표시와 종료 확인, 바로 보이는 건너뛰기와 뒤로가기를 추가했어요.",
+  },
+  {
     version: "0.1.0",
     date: "2026-07-17",
     title: "첫 검토용 버전",

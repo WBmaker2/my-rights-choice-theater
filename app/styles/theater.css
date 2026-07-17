@@ -268,7 +268,7 @@
 
 .skip-bar {
   width: min(calc(100% - 32px), 940px);
-  margin: -14px auto 18px;
+  margin: 12px auto -14px;
   padding: 14px 18px;
   display: flex;
   align-items: center;
@@ -277,7 +277,8 @@
   border: 1px dashed var(--line);
   border-radius: 14px;
   color: var(--ink-soft);
-  background: var(--canvas);
+  background: var(--paper);
+  box-shadow: var(--shadow-small);
   font-size: 0.85rem;
 }
 .skip-bar button { min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); cursor: pointer; font-weight: 900; text-decoration: underline; text-underline-offset: 4px; }
@@ -302,8 +303,9 @@
   .scene-frame { min-height: 440px; grid-template-columns: 1fr; text-align: center; }
   .scene-icon { width: 120px; height: 120px; margin: 0 auto; border-radius: 34px; font-size: 4rem; }
   .choice-card { min-height: 116px; }
-  .skip-bar { align-items: stretch; flex-direction: column; }
-  .skip-bar button { text-align: left; }
+  .skip-bar { justify-content: center; padding: 8px 12px; }
+  .skip-bar > span:first-child { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+  .skip-bar button { width: 100%; text-align: center; }
 }
 
 @media (max-width: 420px) {

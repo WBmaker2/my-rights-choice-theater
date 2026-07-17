@@ -50,6 +50,7 @@ export interface Scene {
   fictionalNotice: string;
   panels: ScenePanel[];
   rightIds: RightId[];
+  rightOptions: RightId[];
   actionOptions: SafeActionId[];
   factPhrases: string[];
   boundaryPhrases: string[];

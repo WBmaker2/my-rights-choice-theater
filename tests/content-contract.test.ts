@@ -22,4 +22,12 @@ describe("검토용 장면 은행", () => {
   it("학생 책임 전가와 개인정보 수집 문구를 거부한다", () => {
     expect(validateSceneBank(sceneBank)).toEqual([]);
   });
+
+  it("각 장면은 핵심 권리를 포함한 권리 카드 3개만 제공한다", () => {
+    for (const scene of sceneBank) {
+      expect(scene.rightOptions).toHaveLength(3);
+      expect(new Set(scene.rightOptions).size).toBe(3);
+      expect(scene.rightOptions).toEqual(expect.arrayContaining(scene.rightIds));
+    }
+  });
 });
