@@ -29,3 +29,6 @@ Playwright 로컬 브라우저에서 다음을 확인했습니다.
 
 스크린샷은 `output/playwright/scene-desktop-fixed.png`, `output/playwright/scene-mobile-fixed.png`, `output/playwright/scene-mobile-fixed-full.png`에 저장했습니다.
 
+## 공개 Pages 배포 확인
+
+첫 공개 배포에서 GitHub Pages용 Vite 설정이 저장소 루트의 `public/learning`을 정적 산출물로 복사하지 않아 이미지 URL이 404가 되는 것을 확인했습니다. `publicDir: "../public"`을 추가하고, 이미지 경로를 현재 페이지 기준 상대 경로로 바꿔 `/my-rights-choice-theater/learning/*.webp`에서 정상 제공되도록 수정했습니다.

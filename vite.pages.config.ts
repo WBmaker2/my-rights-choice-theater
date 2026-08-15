@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   root: "pages",
   base: "/my-rights-choice-theater/",
+  publicDir: "../public",
   plugins: [react()],
   build: {
     outDir: "../dist-pages",
