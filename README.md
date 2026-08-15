@@ -30,3 +30,13 @@ npx tsc --noEmit
 - [보건복지부 아동학대 신고 안내](https://www.mohw.go.kr/menu.es?mid=a30301000000)
 
 공식 자료와 도움 정보의 마지막 확인일은 2026-07-17입니다.
+
+## GitHub Pages
+
+이 프로젝트는 검수된 가상 장면과 브라우저 메모리만 사용하는 정적 앱으로
+GitHub Pages에서도 사용할 수 있습니다.
+
+- `npm run build:pages`: GitHub Pages용 정적 사이트 빌드
+- 공개 주소: https://wbmaker2.github.io/my-rights-choice-theater/
+- 배포 방식: `.github/workflows/deploy-pages.yml`
+- 정적 진입점: `pages/index.html`
