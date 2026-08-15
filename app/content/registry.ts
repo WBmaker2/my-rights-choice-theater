@@ -106,6 +106,12 @@ export const sources = [
 
 export const updates = [
   {
+    version: "0.4.1",
+    date: "2026-08-16",
+    title: "라이트 모드로 고정",
+    detail: "브라우저의 다크 모드 설정과 관계없이 어린이가 읽기 편한 밝은 화면으로 보이도록 고정했어요.",
+  },
+  {
     version: "0.4.0",
     date: "2026-08-15",
     title: "장면별 학습 일러스트 추가",

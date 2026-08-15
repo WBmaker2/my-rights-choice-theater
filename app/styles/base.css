@@ -323,12 +323,6 @@ h2 {
   .app-footer { align-items: flex-start; flex-direction: column; }
 }
 
-@media (prefers-color-scheme: dark) {
-  .app-header { background: rgb(24 34 56 / 88%); border-color: var(--line); }
-  .button-primary { color: #1c1720; box-shadow: 0 8px 0 #80352e; }
-  .button-urgent { color: #eaffef; background: #244531; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
