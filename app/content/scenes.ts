@@ -13,6 +13,7 @@ export const sceneBank: Scene[] = [
     title: "내 생각도 들을 차례예요",
     eyebrow: "교실 이야기",
     fictionalNotice: "여기 나오는 인물과 일은 모두 만든 이야기예요.",
+    imageSrc: "/learning/classroom-turn.webp",
     panels: [
       {
         id: "turn-1",
@@ -53,6 +54,7 @@ export const sceneBank: Scene[] = [
     title: "싫은 별명은 멈춰 주세요",
     eyebrow: "쉬는 시간 이야기",
     fictionalNotice: "여기 나오는 인물과 일은 모두 만든 이야기예요.",
+    imageSrc: "/learning/nickname-boundary.webp",
     panels: [
       {
         id: "nickname-1",
@@ -93,6 +95,7 @@ export const sceneBank: Scene[] = [
     title: "내 사진은 먼저 물어봐 주세요",
     eyebrow: "사진 이야기",
     fictionalNotice: "여기 나오는 인물과 일은 모두 만든 이야기예요.",
+    imageSrc: "/learning/photo-consent.webp",
     panels: [
       {
         id: "photo-1",
@@ -133,6 +136,7 @@ export const sceneBank: Scene[] = [
     title: "개인정보는 보내지 않아요",
     eyebrow: "온라인 놀이 이야기",
     fictionalNotice: "여기 나오는 채팅과 인물은 모두 만든 이야기예요.",
+    imageSrc: "/learning/online-privacy.webp",
     panels: [
       {
         id: "info-1",
@@ -173,6 +177,7 @@ export const sceneBank: Scene[] = [
     title: "놀이가 무섭게 계속돼요",
     eyebrow: "운동장 이야기",
     fictionalNotice: "여기 나오는 인물과 일은 모두 만든 이야기예요.",
+    imageSrc: "/learning/safe-play.webp",
     panels: [
       {
         id: "play-1",

@@ -199,6 +199,15 @@ h2 {
   box-shadow: 0 8px 0 var(--coral-dark);
 }
 
+.button-primary:not(:disabled) {
+  animation: gi-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes gi-pulse {
+  0%, 100% { box-shadow: 0 8px 0 var(--coral-dark), 0 0 0 0 rgb(238 111 88 / 0%); }
+  50% { box-shadow: 0 8px 0 var(--coral-dark), 0 0 0 8px rgb(238 111 88 / 18%); }
+}
+
 .button-secondary,
 .button-quiet {
   border-color: var(--line);
@@ -321,7 +330,7 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
 
 @media (forced-colors: active) {

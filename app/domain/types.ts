@@ -48,6 +48,7 @@ export interface Scene {
   title: string;
   eyebrow: string;
   fictionalNotice: string;
+  imageSrc: string;
   panels: ScenePanel[];
   rightIds: RightId[];
   rightOptions: RightId[];

@@ -106,6 +106,12 @@ export const sources = [
 
 export const updates = [
   {
+    version: "0.4.0",
+    date: "2026-08-15",
+    title: "장면별 학습 일러스트 추가",
+    detail: "이모지 대신 생성 모델로 만든 5개 장면 일러스트를 연결해, 초등학생이 이야기 상황을 더 쉽게 이해하도록 바꿨어요.",
+  },
+  {
     version: "0.3.0",
     date: "2026-07-18",
     title: "초등학생이 읽기 쉬운 말과 화면 개선",

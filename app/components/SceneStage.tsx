@@ -18,13 +18,14 @@ export function SceneStage({ scene, panelIndex, onPrevious, onNext, onContinue }
       <h1 id="scene-title">{scene.title}</h1>
       <p className="fictional-note">{scene.fictionalNotice}</p>
       <div className={`scene-frame scene-tone-${panelIndex + 1}`}>
-        <div className="scene-icon" aria-hidden="true">{panel.icon}</div>
+        {/* The static WebP assets are intentionally served as native images for the Pages build. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="scene-art" src={scene.imageSrc} alt={panel.altText} width={1448} height={1086} />
         <div className="scene-copy">
           <span className="place-label">{panel.place}</span>
           <p>{panel.narration}</p>
           {panel.dialogue && <blockquote>“{panel.dialogue}”</blockquote>}
         </div>
-        <p className="sr-only">{panel.altText}</p>
       </div>
       <div className="panel-dots" aria-label={`${scene.panels.length}개 장면 중 ${panelIndex + 1}번째`}>
         {scene.panels.map((item, index) => (
