@@ -110,6 +110,7 @@ export function TheaterApp() {
   function moveToNextScene() {
     if (sceneIndex === sceneBank.length - 1) {
       setScreen("session");
+      setModal("completion");
       return;
     }
     setSceneIndex((index) => index + 1);
@@ -138,6 +139,7 @@ export function TheaterApp() {
   }
 
   function restart() {
+    setModal(null);
     setSceneIndex(0);
     setCollected([]);
     resetSceneChoices();
@@ -386,6 +388,7 @@ export function TheaterApp() {
       <InfoModals
         open={modal}
         onClose={() => setModal(null)}
+        onRestart={restart}
         onConfirmEnd={() => {
           setModal(null);
           setScreen("ended");

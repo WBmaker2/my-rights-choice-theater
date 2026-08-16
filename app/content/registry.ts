@@ -106,6 +106,12 @@ export const sources = [
 
 export const updates = [
   {
+    version: "0.4.2",
+    date: "2026-08-16",
+    title: "5단계 완료 축하 모달 추가",
+    detail: "모든 장면을 끝내면 축하 메시지와 종료·처음부터 다시 버튼이 있는 반응형 모달을 보여 줘요.",
+  },
+  {
     version: "0.4.1",
     date: "2026-08-16",
     title: "라이트 모드로 고정",

@@ -68,4 +68,35 @@ describe("내 권리 선택 극장 흐름", () => {
     await user.click(screen.getByRole("button", { name: "극장 안내 보기" }));
     expect(screen.getByRole("heading", { name: "도움을 받는 방법은 하나가 아니에요" })).toHaveFocus();
   });
+
+  it("5개 장면을 끝내면 축하 모달에서 처음부터 다시 시작할 수 있다", async () => {
+    const user = userEvent.setup();
+    render(<TheaterApp />);
+
+    await user.click(screen.getByRole("button", { name: "극장 안내 보기" }));
+    await user.click(screen.getByRole("button", { name: "첫 장면 보기" }));
+    for (let index = 0; index < 5; index += 1) {
+      await user.click(screen.getByRole("button", { name: /이 장면 건너뛰기/ }));
+    }
+
+    expect(screen.getByRole("dialog", { name: /5개 장면을 모두 살펴봤어요/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "종료" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "처음부터 다시" }));
+    expect(screen.queryByRole("dialog", { name: /5개 장면을 모두 살펴봤어요/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "내 권리 선택 극장" })).toBeInTheDocument();
+  });
+
+  it("5개 장면 완료 모달에서 종료를 고르면 종료 화면으로 이동한다", async () => {
+    const user = userEvent.setup();
+    render(<TheaterApp />);
+
+    await user.click(screen.getByRole("button", { name: "극장 안내 보기" }));
+    await user.click(screen.getByRole("button", { name: "첫 장면 보기" }));
+    for (let index = 0; index < 5; index += 1) {
+      await user.click(screen.getByRole("button", { name: /이 장면 건너뛰기/ }));
+    }
+
+    await user.click(screen.getByRole("button", { name: "종료" }));
+    expect(screen.getByRole("heading", { name: "활동을 여기서 끝냈어요" })).toBeInTheDocument();
+  });
 });

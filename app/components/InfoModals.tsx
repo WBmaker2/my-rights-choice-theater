@@ -1,15 +1,16 @@
 import { sources, updates } from "../content/registry";
 import { Modal } from "./Modal";
 
-export type ModalName = "urgent" | "updates" | "teacher" | "end" | null;
+export type ModalName = "urgent" | "updates" | "teacher" | "end" | "completion" | null;
 
 interface InfoModalsProps {
   open: ModalName;
   onClose: () => void;
+  onRestart: () => void;
   onConfirmEnd: () => void;
 }
 
-export function InfoModals({ open, onClose, onConfirmEnd }: InfoModalsProps) {
+export function InfoModals({ open, onClose, onRestart, onConfirmEnd }: InfoModalsProps) {
   if (open === "urgent") {
     return (
       <Modal title="도움이 급할 때" onClose={onClose}>
@@ -71,6 +72,22 @@ export function InfoModals({ open, onClose, onConfirmEnd }: InfoModalsProps) {
           <div className="modal-actions">
             <button className="button button-secondary" type="button" onClick={onClose}>계속하기</button>
             <button className="button button-primary" type="button" onClick={onConfirmEnd}>활동 끝내기</button>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
+
+  if (open === "completion") {
+    return (
+      <Modal title="🎉 5개 장면을 모두 살펴봤어요!" onClose={onClose}>
+        <div className="completion-panel">
+          <span className="completion-icon" aria-hidden="true">🌈</span>
+          <p className="modal-lead">끝까지 함께 살펴본 어린이에게 박수를 보내요.</p>
+          <p>지금 만든 도움 문장을 다시 보거나 활동을 여기서 끝낼 수 있어요.</p>
+          <div className="modal-actions completion-actions">
+            <button className="button button-secondary" type="button" onClick={onConfirmEnd}>종료</button>
+            <button className="button button-primary" type="button" onClick={onRestart}>처음부터 다시</button>
           </div>
         </div>
       </Modal>
